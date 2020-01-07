@@ -1,5 +1,7 @@
 FROM golang:latest
 WORKDIR /app
 COPY ./ /app
-RUN go mod download
-ENTRYPOINT go run api/main.go
+ENV GOPROXY=https://goproxy.cn
+RUN go mod download \
+&& go get github.com/githubnemo/CompileDaemon
+ENTRYPOINT CompileDaemon --build="go build api/main.go" --command=./main
